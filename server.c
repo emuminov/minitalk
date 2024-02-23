@@ -6,7 +6,7 @@
 /*   By: emuminov <emuminov@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 13:53:05 by emuminov          #+#    #+#             */
-/*   Updated: 2024/02/22 15:32:41 by emuminov         ###   ########.fr       */
+/*   Updated: 2024/02/23 19:35:48 by emuminov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,20 @@
 #include <stdio.h>
 #include <signal.h>
 
-void	handle_sigusr1(int sig)
+void	handle_sigusr(int sig)
 {
-	(void)sig;
-	printf("1\n");
-}
+	static char	c;
+	static int	curr_bit;
 
-void	handle_sigusr2(int sig)
-{
-	(void)sig;
-	printf("0\n");
+	if (sig == SIGUSR1)
+	{
+		c |= 1 << (7 - curr_bit);
+		curr_bit++;
+	}
+	if (sig == SIGUSR2)
+		curr_bit++;
+	if (curr_bit == 8)
+		printf("%c\n", c);
 }
 
 int	main(void)
@@ -32,10 +36,8 @@ int	main(void)
 
 	pid = getpid();
 	printf("%d\n", pid);
-	signal(SIGUSR1, handle_sigusr1);
-	signal(SIGUSR2, handle_sigusr2);
+	signal(SIGUSR1, handle_sigusr);
+	signal(SIGUSR2, handle_sigusr);
 	while (1)
-	{
-		sleep(1);
-	}
+		usleep(1);
 }
