@@ -6,14 +6,12 @@
 /*   By: emuminov <emuminov@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 13:53:05 by emuminov          #+#    #+#             */
-/*   Updated: 2024/02/24 16:01:52 by emuminov         ###   ########.fr       */
+/*   Updated: 2024/02/24 17:11:31 by emuminov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include <stdio.h>
+#include "minitalk.h"
 #include <signal.h>
-#include <stdlib.h>
 
 typedef struct s_server_state
 {
@@ -29,12 +27,12 @@ void	receive_size(int signal, t_server_state *state)
 
 	if (signal == SIGUSR1)
 	{
-		state->size |= 1 << (sizeof(int) * 8 - 1 - curr_bit);
+		state->size |= 1 << (INT_BITS - 1 - curr_bit);
 		curr_bit++;
 	}
 	if (signal == SIGUSR2)
 		curr_bit++;
-	if (curr_bit == sizeof(int) * 8)
+	if (curr_bit == INT_BITS)
 	{
 		state->size_received = 1;
 		curr_bit = 0;
@@ -62,19 +60,19 @@ void	receive_message(int signal, t_server_state *state)
 
 	if (signal == SIGUSR1)
 	{
-		c |= 1 << (sizeof(char) * 8 - 1 - curr_bit);
+		c |= 1 << (CHAR_BITS - 1 - curr_bit);
 		curr_bit++;
 	}
 	else if (signal == SIGUSR2)
 		curr_bit++;
-	if (curr_bit == sizeof(char) * 8 && c)
+	if (curr_bit == CHAR_BITS && c)
 	{
 		state->message[i] = c;
 		i++;
 		curr_bit = 0;
 		c = 0;
 	}
-	else if (curr_bit == sizeof(char) * 8 && !c)
+	else if (curr_bit == CHAR_BITS && !c)
 		handle_cleanup(&i, &curr_bit, &c, state);
 }
 
@@ -106,7 +104,7 @@ int	main(void)
 	struct sigaction	sa;
 
 	pid = getpid();
-	printf("%d\n", pid);
+	ft_printf("%d\n", pid);
 	sa.sa_flags = SA_SIGINFO;
 	sa.sa_sigaction = handle_signal;
 	sigaction(SIGUSR1, &sa, 0);

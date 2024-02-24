@@ -6,15 +6,12 @@
 /*   By: emuminov <emuminov@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 13:53:02 by emuminov          #+#    #+#             */
-/*   Updated: 2024/02/24 15:09:58 by emuminov         ###   ########.fr       */
+/*   Updated: 2024/02/24 17:11:34 by emuminov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <stdlib.h>
+#include "minitalk.h"
 #include <signal.h>
-#include <unistd.h>
-#include <string.h>
 
 void	send_bit(int bit_index, int bits_number, int c, int pid)
 {
@@ -31,8 +28,8 @@ void	send_size(int pid, int size, int *size_sent)
 
 	if (!message_size && size)
 		message_size = size;
-	send_bit(curr_bit++, sizeof(int) * 8, message_size, pid);
-	if (curr_bit == sizeof(int) * 8)
+	send_bit(curr_bit++, INT_BITS, message_size, pid);
+	if (curr_bit == INT_BITS)
 	{
 		curr_bit = 0;
 		*size_sent = 1;
@@ -51,8 +48,8 @@ void	send_message(int pid, int *size_sent, char *str)
 		message = str;
 	if (!size_sent)
 		return ;
-	send_bit(curr_bit++, sizeof(char) * 8, message[i], pid);
-	if (curr_bit == sizeof(char) * 8 && message[i])
+	send_bit(curr_bit++, CHAR_BITS, message[i], pid);
+	if (curr_bit == CHAR_BITS && message[i])
 	{
 		curr_bit = 0;
 		i++;
@@ -94,8 +91,8 @@ int	main(int argc, char **argv)
 	sigaction(SIGUSR2, &sa, 0);
 	pid = argv[1];
 	str = argv[2];
-	send_message(atoi(pid), NULL, str);
-	send_size(atoi(pid), strlen(str), 0);
+	send_message(ft_atoi(pid), NULL, str);
+	send_size(ft_atoi(pid), ft_strlen(str), 0);
 	while (1)
 		pause();
 }
