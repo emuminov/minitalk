@@ -6,7 +6,7 @@
 /*   By: emuminov <emuminov@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 13:53:02 by emuminov          #+#    #+#             */
-/*   Updated: 2024/02/24 08:56:53 by emuminov         ###   ########.fr       */
+/*   Updated: 2024/02/24 10:40:43 by emuminov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	send(int pid, char *str)
 	if (!message && str)
 		message = str;
 	send_bit(curr_bit++, message[i], pid);
-	usleep(300);
+	usleep(100);
 	if (curr_bit == 8 && message[i])
 	{
 		curr_bit = 0;
@@ -70,5 +70,6 @@ int	main(int argc, char **argv)
 	str = argv[2];
 	send(atoi(pid), str);
 
-	pause();
+	while (1)
+		pause();
 }
