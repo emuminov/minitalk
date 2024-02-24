@@ -1,0 +1,15 @@
+SERVER_NAME=server
+CLIENT_NAME=client
+
+SERVER_FILES=server.c
+CLIENT_FILES=client.c
+
+CFLAGS=-g
+
+$(SERVER_NAME): $(SERVER_FILES)
+	$(CC) $(CFLAGS) $(SERVER_FILES) -o $@
+
+$(CLIENT_NAME): $(CLIENT_FILES)
+	$(CC) $(CFLAGS) $(CLIENT_FILES) -o $@
+
+all: $(SERVER_NAME) $(CLIENT_NAME)
