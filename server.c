@@ -6,7 +6,7 @@
 /*   By: emuminov <emuminov@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 13:53:05 by emuminov          #+#    #+#             */
-/*   Updated: 2024/02/24 16:00:00 by emuminov         ###   ########.fr       */
+/*   Updated: 2024/02/24 16:01:52 by emuminov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,5 +112,5 @@ int	main(void)
 	sigaction(SIGUSR1, &sa, 0);
 	sigaction(SIGUSR2, &sa, 0);
 	while (1)
-		usleep(1);
+		pause();
 }
