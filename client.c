@@ -6,7 +6,7 @@
 /*   By: emuminov <emuminov@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 13:53:02 by emuminov          #+#    #+#             */
-/*   Updated: 2024/02/24 17:11:34 by emuminov         ###   ########.fr       */
+/*   Updated: 2024/02/25 18:45:06 by emuminov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ void	send_size(int pid, int size, int *size_sent)
 		*size_sent = 1;
 		return ;
 	}
-	usleep(1);
 }
 
 void	send_message(int pid, int *size_sent, char *str)
@@ -54,7 +53,6 @@ void	send_message(int pid, int *size_sent, char *str)
 		curr_bit = 0;
 		i++;
 	}
-	usleep(1);
 }
 
 void	handle_signal(int signal, siginfo_t *siginfo, void *context)
