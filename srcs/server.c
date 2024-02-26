@@ -6,7 +6,7 @@
 /*   By: emuminov <emuminov@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 13:53:05 by emuminov          #+#    #+#             */
-/*   Updated: 2024/02/26 07:49:58 by emuminov         ###   ########.fr       */
+/*   Updated: 2024/02/26 11:24:17 by emuminov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ void	handle_cleanup(int *i, int *curr_bit, char *c, t_server_state *state)
 	state->message[*i] = '\0';
 	write(1, state->message, state->size);
 	write(1, "\n", 1);
+	free(state->message);
+	state->message = NULL;
 	state->message_received = 1;
 	state->size = 0;
 	state->size_received = 0;
