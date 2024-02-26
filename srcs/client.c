@@ -6,11 +6,11 @@
 /*   By: emuminov <emuminov@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 13:53:02 by emuminov          #+#    #+#             */
-/*   Updated: 2024/02/25 18:45:06 by emuminov         ###   ########.fr       */
+/*   Updated: 2024/02/26 08:26:20 by emuminov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minitalk.h"
+#include "../includes/minitalk.h"
 #include <signal.h>
 
 void	send_bit(int bit_index, int bits_number, int c, int pid)
@@ -21,13 +21,13 @@ void	send_bit(int bit_index, int bits_number, int c, int pid)
 		kill(pid, SIGUSR2);
 }
 
-void	send_size(int pid, int size, int *size_sent)
+void	send_size(int pid, int init_size, int *size_sent)
 {
 	static int	curr_bit;
 	static int	message_size;
 
-	if (!message_size && size)
-		message_size = size;
+	if (!message_size && init_size)
+		message_size = init_size;
 	send_bit(curr_bit++, INT_BITS, message_size, pid);
 	if (curr_bit == INT_BITS)
 	{
@@ -37,14 +37,14 @@ void	send_size(int pid, int size, int *size_sent)
 	}
 }
 
-void	send_message(int pid, int *size_sent, char *str)
+void	send_message(int pid, int *size_sent, char *init_message)
 {
 	static int	i;
 	static int	curr_bit;
-	static char	*message = NULL;
+	static char	*message;
 
-	if (!message && str)
-		message = str;
+	if (!message && init_message)
+		message = init_message;
 	if (!size_sent)
 		return ;
 	send_bit(curr_bit++, CHAR_BITS, message[i], pid);
@@ -61,13 +61,9 @@ void	handle_signal(int signal, siginfo_t *siginfo, void *context)
 
 	(void)context;
 	if (!size_sent && signal == SIGUSR1)
-	{
 		send_size(siginfo->si_pid, 0, &size_sent);
-	}
 	else if (size_sent && signal == SIGUSR1)
-	{
 		send_message(siginfo->si_pid, &size_sent, NULL);
-	}
 	else if (signal == SIGUSR2)
 	{
 		write(1, "OK!\n", 4);
@@ -83,12 +79,12 @@ int	main(int argc, char **argv)
 
 	if (argc != 3)
 		return (EXIT_FAILURE);
+	pid = argv[1];
+	str = argv[2];
 	sa.sa_flags = SA_SIGINFO;
 	sa.sa_sigaction = handle_signal;
 	sigaction(SIGUSR1, &sa, 0);
 	sigaction(SIGUSR2, &sa, 0);
-	pid = argv[1];
-	str = argv[2];
 	send_message(ft_atoi(pid), NULL, str);
 	send_size(ft_atoi(pid), ft_strlen(str), 0);
 	while (1)

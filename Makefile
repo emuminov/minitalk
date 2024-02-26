@@ -1,28 +1,53 @@
-SERVER_NAME=server
+NAME=server
 CLIENT_NAME=client
+
+SRCS_DIR=srcs
+OBJS_DIR=objs
+HEAD_DIR=includes
 
 SERVER_FILES=server.c
 CLIENT_FILES=client.c
-HEADER=minitalk.h
+
+SERVER_SRCS=$(SRCS_DIR)/$(SERVER_FILES)
+CLIENT_SRCS=$(SRCS_DIR)/$(CLIENT_FILES)
+
+SERVER_OBJS=$(SERVER_FILES:%.c=$(OBJS_DIR)/%.o)
+CLIENT_OBJS=$(CLIENT_FILES:%.c=$(OBJS_DIR)/%.o)
+
+HEADER=$(HEAD_DIR)/minitalk.h
 
 CFLAGS=-g -Wall -Wextra -Werror
 
-LIB=libft.a
 LIB_DIR=libft
-LIB_PATH=$(LIB_DIR)/$(LIB)
+LIB=$(LIB_DIR)/libft.a
 
-$(SERVER_NAME): $(SERVER_FILES) $(HEADER) $(LIB)
-	$(CC) $(CFLAGS) $(SERVER_FILES) $(LIB) -o $@
+$(NAME): $(SERVER_OBJS) $(HEADER) $(LIB)
+	$(CC) $(CFLAGS) $(SERVER_OBJS) $(LIB) -o $@
 
-$(CLIENT_NAME): $(CLIENT_FILES) $(HEADER) $(LIB)
-	$(CC) $(CFLAGS) $(CLIENT_FILES) $(LIB) -o $@
+$(CLIENT_NAME): $(CLIENT_OBJS) $(HEADER) $(LIB)
+	$(CC) $(CFLAGS) $(CLIENT_OBJS) $(LIB) -o $@
 
-$(LIB): $(LIB_PATH)
-	cp $(LIB_PATH) .
+$(SERVER_OBJS): $(SERVER_SRCS)
+	@mkdir -p $(OBJS_DIR)
+	$(CC) $(CFLAGS) -c $< -o $@
 
-$(LIB_PATH):
+$(CLIENT_OBJS): $(CLIENT_SRCS)
+	@mkdir -p $(OBJS_DIR)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(LIB):
 	$(MAKE) -C $(LIB_DIR)
 
-all: $(SERVER_NAME) $(CLIENT_NAME)
+all: $(NAME) $(CLIENT_NAME)
 
-.PHONY: all #clean fclean re
+clean:
+	$(MAKE) -C $(LIB_DIR) $@
+	rm -rf $(OBJS_DIR)
+
+fclean: clean
+	$(MAKE) -C $(LIB_DIR) $@
+	rm -f $(NAME) $(CLIENT_NAME)
+
+re: fclean all
+
+.PHONY: all clean fclean re

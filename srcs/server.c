@@ -6,20 +6,12 @@
 /*   By: emuminov <emuminov@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 13:53:05 by emuminov          #+#    #+#             */
-/*   Updated: 2024/02/24 17:11:31 by emuminov         ###   ########.fr       */
+/*   Updated: 2024/02/26 07:49:58 by emuminov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minitalk.h"
+#include "../includes/minitalk.h"
 #include <signal.h>
-
-typedef struct s_server_state
-{
-	int		size;
-	int		size_received;
-	char	*message;
-	int		message_received;
-}	t_server_state;
 
 void	receive_size(int signal, t_server_state *state)
 {
@@ -104,7 +96,7 @@ int	main(void)
 	struct sigaction	sa;
 
 	pid = getpid();
-	ft_printf("%d\n", pid);
+	ft_printf("The pid is: %d\n", pid);
 	sa.sa_flags = SA_SIGINFO;
 	sa.sa_sigaction = handle_signal;
 	sigaction(SIGUSR1, &sa, 0);
