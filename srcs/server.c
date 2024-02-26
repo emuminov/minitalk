@@ -6,7 +6,7 @@
 /*   By: emuminov <emuminov@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 13:53:05 by emuminov          #+#    #+#             */
-/*   Updated: 2024/02/26 11:24:17 by emuminov         ###   ########.fr       */
+/*   Updated: 2024/02/26 11:47:54 by emuminov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ void	handle_signal(int signal, siginfo_t *siginfo, void *context)
 	else
 	{
 		if (!state.message)
-			state.message = malloc((sizeof(char) + 1) * state.size);
+			state.message = malloc(sizeof(char) * (state.size + 1));
 		receive_message(signal, &state);
 	}
 	if ((signal == SIGUSR1 || signal == SIGUSR2) && !state.message_received)
