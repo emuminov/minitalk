@@ -6,7 +6,7 @@
 /*   By: emuminov <emuminov@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 22:46:06 by emuminov          #+#    #+#             */
-/*   Updated: 2024/02/22 15:55:06 by emuminov         ###   ########.fr       */
+/*   Updated: 2024/02/26 11:00:35 by emuminov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,18 +18,21 @@
 #  define BUFFER_SIZE 8
 # endif
 
-typedef struct s_node {
+typedef struct s_node
+{
 	struct s_node	*next;
 	char			*content;
 	size_t			content_len;
 }	t_node;
 
-typedef struct s_list {
+typedef struct s_list
+{
 	t_node	*head;
 	t_node	*tail;
 }	t_list;
 
-typedef struct s_file {
+typedef struct s_file
+{
 	int		line;
 	int		file_ended;
 	char	*leftovers;
