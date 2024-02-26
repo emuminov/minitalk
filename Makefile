@@ -16,7 +16,7 @@ CLIENT_OBJS=$(CLIENT_FILES:%.c=$(OBJS_DIR)/%.o)
 
 HEADER=$(HEAD_DIR)/minitalk.h
 
-CFLAGS=-g -Wall -Wextra -Werror
+CFLAGS=-Wall -Wextra -Werror
 
 LIB_DIR=libft
 LIB=$(LIB_DIR)/libft.a
@@ -35,7 +35,7 @@ $(CLIENT_OBJS): $(CLIENT_SRCS)
 	@mkdir -p $(OBJS_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(LIB):
+$(LIB)::
 	$(MAKE) -C $(LIB_DIR)
 
 all: $(NAME) $(CLIENT_NAME)
