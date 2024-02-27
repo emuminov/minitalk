@@ -1,3 +1,7 @@
+#compilation vars-------------
+CFLAGS=-Wall -Wextra -Werror
+
+#names and folders------------
 NAME=server
 CLIENT_NAME=client
 
@@ -16,11 +20,11 @@ CLIENT_OBJS=$(CLIENT_FILES:%.c=$(OBJS_DIR)/%.o)
 
 HEADER=$(HEAD_DIR)/minitalk.h
 
-CFLAGS=-Wall -Wextra -Werror
-
+#libft------------------------
 LIB_DIR=libft
 LIB=$(LIB_DIR)/libft.a
 
+#rules-----------------------
 all: $(NAME) $(CLIENT_NAME)
 
 $(NAME): $(SERVER_OBJS) $(HEADER) $(LIB)
