@@ -48,6 +48,8 @@ fclean: clean
 	$(MAKE) -C $(LIB_DIR) $@
 	rm -f $(NAME) $(CLIENT_NAME)
 
-re: fclean all
+re: fclean
+	$(MAKE) -C $(LIB_DIR) $@
+	$(MAKE) all --no-print-directory
 
 .PHONY: all clean fclean re
