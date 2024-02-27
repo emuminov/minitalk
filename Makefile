@@ -21,24 +21,24 @@ CFLAGS=-Wall -Wextra -Werror
 LIB_DIR=libft
 LIB=$(LIB_DIR)/libft.a
 
+all: $(NAME) $(CLIENT_NAME)
+
 $(NAME): $(SERVER_OBJS) $(HEADER) $(LIB)
 	$(CC) $(CFLAGS) $(SERVER_OBJS) $(LIB) -o $@
 
 $(CLIENT_NAME): $(CLIENT_OBJS) $(HEADER) $(LIB)
 	$(CC) $(CFLAGS) $(CLIENT_OBJS) $(LIB) -o $@
 
-$(SERVER_OBJS): $(SERVER_SRCS)
+$(SERVER_OBJS): $(SERVER_SRCS) $(HEADER)
 	@mkdir -p $(OBJS_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(CLIENT_OBJS): $(CLIENT_SRCS)
+$(CLIENT_OBJS): $(CLIENT_SRCS) $(HEADER)
 	@mkdir -p $(OBJS_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(LIB)::
 	$(MAKE) -C $(LIB_DIR)
-
-all: $(NAME) $(CLIENT_NAME)
 
 clean:
 	$(MAKE) -C $(LIB_DIR) $@
