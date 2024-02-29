@@ -6,7 +6,7 @@
 /*   By: emuminov <emuminov@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 13:53:02 by emuminov          #+#    #+#             */
-/*   Updated: 2024/02/26 08:26:20 by emuminov         ###   ########.fr       */
+/*   Updated: 2024/02/29 12:31:37 by emuminov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,8 +78,16 @@ int	main(int argc, char **argv)
 	struct sigaction	sa;
 
 	if (argc != 3)
+	{
+		ft_putstr_fd("Not enough argyments\n", STDERR_FILENO);
 		return (EXIT_FAILURE);
+	}
 	pid = argv[1];
+	if (ft_atoi(pid) < 1)
+	{
+		ft_putstr_fd("Bad pid\n", STDERR_FILENO);
+		exit(EXIT_FAILURE);
+	}
 	str = argv[2];
 	sa.sa_flags = SA_SIGINFO;
 	sa.sa_sigaction = handle_signal;
